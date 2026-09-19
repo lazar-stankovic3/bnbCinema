@@ -12,7 +12,7 @@ import { jwtDecode } from 'jwt-decode';
   styleUrls: ['./app.component.css', './payment.component.css']
 })
 export class AppComponent {
-  title = 'BNB Cinema';
+  title = 'Klikni Film';
 
   footerUrl = '/about';
   footerLink = 'Saznaj više';
