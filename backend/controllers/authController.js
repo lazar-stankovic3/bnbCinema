@@ -4,14 +4,33 @@ const bcrypt = require('bcryptjs');
 
 exports.signup = async (req, res) => {
     console.log("Signup zahtev primljen:", req.body);
-    const { name, email, password } = req.body;
+    const name = typeof req.body?.name === 'string' ? req.body.name.trim() : '';
+    const email = typeof req.body?.email === 'string' ? req.body.email.trim().toLowerCase() : '';
+    const password = typeof req.body?.password === 'string' ? req.body.password : '';
+
+    if (!name || !email || !password) {
+        return res.status(400).json({ message: 'Ime, email i lozinka su obavezni' });
+    }
+    if (password.length < 6) {
+        return res.status(400).json({ message: 'Lozinka mora imati najmanje 6 karaktera' });
+    }
 
     db.query('SELECT * FROM users WHERE email = ?', [email], async (err, result) => {
+        if (err) {
+            console.error('Greška pri proveri korisnika:', err);
+            return res.status(500).json({ message: 'Greška pri povezivanju sa bazom' });
+        }
         if (result.length > 0) {
             return res.status(400).json({ message: 'Email je već registrovan' });
         }
 
-        const hashedPassword = await bcrypt.hash(password, 10);
+        let hashedPassword;
+        try {
+            hashedPassword = await bcrypt.hash(password, 10);
+        } catch (hashError) {
+            console.error('Greška pri enkripciji lozinke:', hashError);
+            return res.status(500).json({ message: 'Greška pri registraciji' });
+        }
 
         db.query('INSERT INTO users (name, email, password) VALUES (?, ?, ?)', 
             [name, email, hashedPassword], 
@@ -48,12 +67,13 @@ exports.login = (req, res) => {
         }
 
         const token = jwt.sign(
-            { id: user.id, email: user.email, username: user.name }, 
+            { id: user.id, email: user.email, username: user.name, role: user.role || 'user' }, 
             process.env.JWT_SECRET, 
             { expiresIn: '1h' }
         );
 
         console.log('Korisnik uspešno prijavljen:', { id: user.id, email: user.email, username: user.name });
+        res.cookie('bnb_token', token, { httpOnly: true, sameSite: 'lax', secure: process.env.NODE_ENV === 'production', maxAge: 60 * 60 * 1000, path: '/' });
         res.json({ token });
     });
 };

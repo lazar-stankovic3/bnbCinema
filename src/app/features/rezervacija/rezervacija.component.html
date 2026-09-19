@@ -1,24 +1,13 @@
-<div class="rezervacija-container" *ngIf="film">
-    <h1>Rezervacija za: {{ film.title }}</h1>
-
-    <div class="film-info">
-        <img [src]="film.poster" alt="{{ film.title }}">
-        <p><strong>Režiser:</strong> {{ film.director.name }}</p>
-        <p><strong>Godina:</strong> {{ film.startDate }}</p>
-        <p><strong>Žanr:</strong> {{ film.genre }}</p>
-    </div>
-
-    <form>
-        <label for="korisnickoIme">Vaše ime:</label>
-        <input type="text" id="korisnickoIme" [(ngModel)]="korisnickoIme" name="korisnickoIme" required>
-    
-        <label for="brojKarata">Broj karata:</label>
-        <input type="number" id="brojKarata" [(ngModel)]="brojKarata" name="brojKarata" min="1" required>
-    
-        <label for="datum">Datum projekcije:</label>
-        <input type="date" id="datum" [(ngModel)]="datum" name="datum" required>
-    
-        <button type="button" (click)="potvrdiRezervaciju()">Potvrdi rezervaciju</button>
-    </form>
-    
+<div class="booking-page" *ngIf="film">
+  <div class="booking-top"><button class="back-button" type="button" (click)="goBack()">← Nazad na filmove</button><span class="step-label">REZERVACIJA KARATA</span></div>
+  <div class="booking-layout">
+    <aside class="movie-card"><img [src]="film.poster" [alt]="film.title"><div class="movie-card-info"><span class="eyebrow">SADA U BIOSKOPU</span><h1>{{ film.title }}</h1><p>{{ film.director.name }}</p><p>{{ film.genre }}</p></div></aside>
+    <main class="booking-panel">
+      <div class="booking-heading"><div><span class="eyebrow">KORAK 1 OD 2</span><h2>Izaberite projekciju</h2></div><div class="price"><strong>{{ cenaKarte.toFixed(2) }} €</strong><small>po karti</small></div></div>
+      <div class="field-grid"><label>Vaše ime<input type="text" [(ngModel)]="korisnickoIme" name="korisnickoIme" placeholder="Unesite ime"></label><label>Projekcija<select [(ngModel)]="selectedProjekcija" (ngModelChange)="izaberiProjekciju($event)" name="projekcija"><option [ngValue]="null" disabled>Izaberite projekciju</option><option *ngFor="let p of projekcije" [ngValue]="p">{{ p.datum | date:'dd.MM.yyyy' }} · {{ p.termin }} · {{ p.sala }}</option></select><small *ngIf="!projekcije.length">Nema unetih projekcija. Administrator treba da doda termin.</small></label><label>Broj karata<input type="number" [(ngModel)]="brojKarata" (ngModelChange)="promeniBrojKarata()" name="brojKarata" min="1" max="8"></label></div>
+      <div class="seat-heading"><div><span class="eyebrow">KORAK 2 OD 2</span><h2>Izaberite sedišta</h2><p>Sala: {{ selectedProjekcija?.sala || '—' }}. Kliknite na slobodna sedišta.</p></div><div class="legend"><span><i class="free"></i> Slobodno</span><span><i class="chosen"></i> Izabrano</span><span><i class="taken"></i> Zauzeto</span></div></div>
+      <div class="screen"><span>BIOSKOPSKO PLATNO</span></div><div class="seats"><div class="seat-row" *ngFor="let row of seatRows"><span class="row-label">{{ row }}</span><button type="button" *ngFor="let number of seatNumbers" class="seat" [class.occupied]="isOccupied(row + number)" [class.selected]="isSelected(row + number)" (click)="toggleSeat(row + number)">{{ number }}</button></div></div>
+      <div class="booking-summary"><div><span>Izabrana sedišta</span><strong>{{ selectedSeats.length ? selectedSeats.join(', ') : 'Nijedno sedište' }}</strong></div><div class="total"><span>Ukupno</span><strong>{{ (selectedSeats.length * cenaKarte).toFixed(2) }} €</strong></div><button type="button" class="confirm-booking" (click)="potvrdiRezervaciju()">Dodaj u korpu →</button></div>
+    </main>
+  </div>
 </div>

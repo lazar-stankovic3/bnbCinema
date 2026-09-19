@@ -2,44 +2,52 @@ body {
   background-color: #111;
   font-family: Arial, sans-serif;
 }
-.profile-container{
-  color: white;
-}
-.naloginfo{
-  text-align: left;
-}
+
 .profile-container {
   display: flex;
   justify-content: space-between;
   padding: 20px;
+  color: #00ffe1;
+  animation: fadeProfile 0.6s ease-in-out;
 }
 
-.account-info{
-  padding: 20px;
-  border-right: 3px solid #f5c518;
+.naloginfo {
+  text-align: left;
 }
 
 .account-info {
   width: 30%;
+  padding: 20px;
+  border-right: 3px solid #00ffe1;
+  background: #1a1a1a;
+  border-radius: 10px;
+  box-shadow: 0 0 12px rgba(0, 255, 225, 0.2);
+  animation: slideLeftProfile 0.6s ease-out;
 }
 
 .account-info input {
   display: block;
-  width: 30%;
-  padding: 8px;
+  width: 80%;
+  padding: 10px;
   text-align: center;
-  margin: auto;
-  margin-top: 8px;
-  margin-bottom: 8px;
-  border: 2px solid #f5c518;
-  background: black;
-  color: #f5c518;
+  margin: 10px auto;
+  border: 2px solid #00ffe1;
+  background: #000;
+  color: #00ffe1;
+  border-radius: 6px;
+  transition: 0.3s ease-in-out;
+}
+
+.account-info input:focus {
+  background: #111;
+  border-color: #00c2b8;
+  outline: none;
 }
 
 .save-button {
   width: 85%;
   padding: 12px;
-  background: linear-gradient(45deg, #ffcc00, #ff6600);
+  background: linear-gradient(45deg, #00ffe1, #00c2b8);
   color: black;
   font-weight: bold;
   border: none;
@@ -49,42 +57,104 @@ body {
   font-size: 16px;
   text-transform: uppercase;
   transition: all 0.3s ease-in-out;
-  box-shadow: 0px 4px 8px rgba(255, 204, 0, 0.5);
+  box-shadow: 0px 4px 8px rgba(0, 255, 225, 0.4);
 }
 
 .save-button:hover {
-  background: linear-gradient(45deg, #ff6600, #ffcc00);
+  background: linear-gradient(45deg, #00c2b8, #00ffe1);
   transform: scale(1.05);
-  box-shadow: 0px 6px 12px rgba(255, 204, 0, 0.7);
+  box-shadow: 0px 6px 12px rgba(0, 255, 225, 0.6);
 }
 
 .save-button:active {
   transform: scale(0.95);
 }
 
-
-.brisirez{
+.brisirez {
   padding: 8px;
   width: 50%;
-  margin-top: 0px;
   font-size: 12px;
+  background: #ff4444;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.3s ease-in-out, transform 0.2s;
 }
+
+.brisirez:hover {
+  background: darkred;
+  transform: scale(1.05);
+}
+
 .reservations {
   width: 65%;
   text-align: center;
+  animation: slideRightProfile 0.6s ease-out;
 }
 
 .table-container {
   padding: 10px;
+  background: #1a1a1a;
+  border-radius: 10px;
+  box-shadow: 0 0 12px rgba(0, 255, 225, 0.15);
 }
 
 table {
   width: 100%;
   border-collapse: collapse;
+  color: #00ffe1;
 }
 
 th, td {
-  border: 1px solid #f5c518;
+  border: 1px solid #00ffe1;
   padding: 10px;
   text-align: center;
+  font-size: 14px;
 }
+
+@keyframes fadeProfile {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideLeftProfile {
+  from { transform: translateX(-20px); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
+}
+
+@keyframes slideRightProfile {
+  from { transform: translateX(20px); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
+}
+.profile-container, .profile-wrapper { background: #08090d; color: #d4d4d8; }
+.profile-container h1, .profile-container h2, .naloginfo { color: #fff; }
+.profile-container input { background: #18181b; color: #fff; border-color: #3f3f46; }
+.profile-container button, .save-button { background: #e50914; color: #fff; box-shadow: none; }
+.profile-container button:hover, .save-button:hover { background: #f6121d; }
+
+/* Modern account dashboard */
+.profile-container { min-height: calc(100vh - 150px); display: grid; grid-template-columns: minmax(280px, 360px) 1fr; gap: 28px; padding: clamp(28px, 5vw, 70px) clamp(18px, 7vw, 110px); background: #08090d; align-items: start; }
+.account-info, .reservations { width: auto; border: 1px solid #27272a; border-radius: 16px; background: #111217; box-shadow: 0 18px 45px rgba(0,0,0,.28); }
+.account-info { padding: 28px; border-right: 1px solid #27272a; }
+.account-info::before { content: 'MOJ NALOG'; display: block; color: #e50914; font-size: 11px; font-weight: 800; letter-spacing: 1.5px; margin-bottom: 18px; }
+.account-info h2 { margin: 0 0 20px; color: #fff; font-size: 24px; text-align: left; }
+.account-info h2::first-letter { color: #e50914; }
+.account-info p { text-align: left; margin: 12px 0; padding: 12px 14px; background: #18181b; border-radius: 8px; color: #d4d4d8; font-size: 13px; }
+.account-info p strong { color: #fff; }
+.account-info label { display: block; color: #a1a1aa; font-size: 12px; font-weight: 600; margin: 18px 0 7px; text-align: left; }
+.account-info input { width: 100%; margin: 0; padding: 12px 14px; text-align: left; border: 1px solid #3f3f46; background: #09090b; color: #fff; border-radius: 8px; }
+.account-info input:focus { border-color: #e50914; box-shadow: 0 0 0 3px rgba(229,9,20,.13); }
+.account-info .save-button { width: 100%; margin-top: 22px; padding: 12px; border-radius: 8px; text-transform: none; font-size: 14px; }
+.reservations { padding: 28px; }
+.reservations h3 { color: #fff; font-size: 25px; text-align: left; margin: 0 0 22px; }
+.reservations h3::before { content: 'PREGLED NALOGA'; display: block; color: #e50914; font-size: 11px; letter-spacing: 1.5px; margin-bottom: 7px; }
+.table-container { padding: 0; background: transparent; box-shadow: none; }
+table { color: #e4e4e7; border-collapse: separate; border-spacing: 0 8px; }
+th { border: 0; color: #71717a; font-size: 11px; text-transform: uppercase; letter-spacing: 1px; padding: 8px 12px; }
+td { border: 0; background: #18181b; padding: 14px 12px; color: #d4d4d8; }
+td:first-child { border-radius: 8px 0 0 8px; color: #fff; font-weight: 600; }
+td:last-child { border-radius: 0 8px 8px 0; }
+.brisirez { width: auto; padding: 8px 11px; background: transparent; color: #f87171; border: 1px solid #7f1d1d; border-radius: 7px; cursor: pointer; }
+.brisirez:hover { background: #7f1d1d; color: #fff; transform: none; }
+@media (max-width: 800px) { .profile-container { grid-template-columns: 1fr; padding: 24px 16px 50px; } .table-container { overflow-x: auto; } table { min-width: 560px; } }

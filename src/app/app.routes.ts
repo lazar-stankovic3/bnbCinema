@@ -6,6 +6,8 @@ import { SignupComponent } from './features/signup/signup.component';
 import { FilmoviComponent } from './features/filmovi/filmovi.component';
 import { RezervacijaComponent } from './features/rezervacija/rezervacija.component';
 import { ProfileComponent } from './features/profile/profile.component';
+import { AdminComponent } from './features/admin/admin.component';
+import { KartaComponent } from './features/karta/karta.component';
 
 export const routes: Routes = [
     { path: '', component: HomeComponent },
@@ -15,6 +17,8 @@ export const routes: Routes = [
     { path: 'filmovi', component: FilmoviComponent },
     { path: 'rezervacija/:title', component: RezervacijaComponent },  
     { path: 'profile', component: ProfileComponent }, 
+    { path: 'admin', component: AdminComponent },
+    { path: 'karta', component: KartaComponent },
     { path: '**', redirectTo: '', pathMatch: 'full' } 
 ];
 

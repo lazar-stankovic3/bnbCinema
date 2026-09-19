@@ -92,6 +92,20 @@ export class ProfileComponent implements OnInit {
     });
   }
 
+  showTicket(reservation: any): void {
+    if (!this.isBrowser) return;
+    const ticket = {
+      film: { title: reservation.film_title },
+      datum: reservation.datum,
+      termin: reservation.termin,
+      sedista: reservation.sedista ? reservation.sedista.split(',').map((seat: string) => seat.trim()) : [],
+      sala: reservation.sala || 'Sala 1',
+      kod: reservation.kod || `BNB-${reservation.id}`
+    };
+    localStorage.setItem('lastTicket', JSON.stringify(ticket));
+    this.router.navigate(['/karta']);
+  }
+
   updateProfile(): void {
     if (!this.isBrowser) return;
 

@@ -1,9 +1,6 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
 <div class="app">
   <header>
-    <section>
-      <h1>{{ title }}</h1>
-    </section>
     <nav>
       <div class="nav-left">
         <ul>
@@ -27,6 +24,7 @@
           <li *ngIf="isLoggedIn">
             <a href="#" (click)="logout()"><i class="fa-solid fa-right-from-bracket"></i> Odjava</a>
           </li>
+          <li *ngIf="isAdmin"><a routerLink="/admin"><i class="fa-solid fa-gauge-high"></i> Admin</a></li>
           
           <li class="cart-nav" (click)="toggleCart()">
             <a >
@@ -41,7 +39,7 @@
   </header>
 
   <div class="banner">
-    <marquee scrollamount="7"><i class="fa-solid fa-film"></i> Dobrodošli u BNB Cinema - Gledajte najbolje filmove kod nas! <i class="fa-solid fa-film"></i></marquee>
+    <div class="cinema-announcement"><span class="announcement-icon"><i class="fa-solid fa-film"></i></span><span class="announcement-copy"><b>Dobrodošli u Klikni Film</b><small>Vaša sledeća filmska priča počinje ovde</small></span><span class="announcement-line"></span><span class="announcement-tag">UŽIVAJTE U PROJEKCIJI</span></div>
   </div>
 
   <main>
@@ -59,9 +57,11 @@
         <button (click)="ukloniIzKorpe(rezervacija)"><i class="fa-solid fa-xmark"></i></button>
       </li>
     </ul>
-    <button class="confirm-button" (click)="potvrdiSveRezervacije()"><i class="fa-solid fa-check"></i> Potvrdi sve</button>
+    <p><strong>Ukupno: {{ ukupno().toFixed(2) }} €</strong></p><button class="confirm-button" (click)="zapocniPlacanje()"><i class="fa-solid fa-credit-card"></i> Nastavi na plaćanje</button>
   </div> 
 </div>  
+
+<div class="cart-modal payment-modal" *ngIf="paymentOpen"><div class="cart-content"><h2><i class="fa-solid fa-lock"></i> Simulacija plaćanja</h2><p>Ukupno za plaćanje: <strong>{{ ukupno().toFixed(2) }} €</strong></p><label><input type="radio" [(ngModel)]="paymentMethod" value="card"> Platna kartica</label><label><input type="radio" [(ngModel)]="paymentMethod" value="cash"> Plaćanje na blagajni</label><div *ngIf="paymentMethod === 'card'" class="payment-fields"><input [(ngModel)]="cardName" placeholder="Ime i prezime"><input [(ngModel)]="cardNumber" placeholder="Broj kartice (16 cifara)" maxlength="19"><div><input [(ngModel)]="cardExpiry" placeholder="MM/GG" maxlength="5"><input [(ngModel)]="cardCvv" placeholder="CVV" maxlength="4"></div></div><small>Podaci se koriste samo za demonstraciju i ne čuvaju se.</small><button class="confirm-button" (click)="potvrdiSveRezervacije()">Plati i potvrdi rezervaciju</button><button class="cancel-payment" (click)="paymentOpen=false">Nazad</button></div></div>
 
 
   <footer>

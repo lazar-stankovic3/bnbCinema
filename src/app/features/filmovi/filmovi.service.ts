@@ -31,6 +31,14 @@ export class FilmoviService {
     );
   }
 
+  getOccupiedSeats(title: string, datum: string, termin: string): Observable<string[]> {
+    return this.http.get<string[]>(`${this.localApiUrl}/api/seats`, { params: { film: title, datum, termin } });
+  }
+
+  getScreenings(title: string): Observable<any[]> {
+    return this.http.get<any[]>(`${this.localApiUrl}/api/screenings`, { params: { film: title } });
+  }
+
   submitReview(review: { filmId: number; rating: number; comment: string }): Observable<any> {
     let headers = new HttpHeaders();
 

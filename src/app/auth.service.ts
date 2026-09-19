@@ -24,15 +24,15 @@ export class AuthService {
   }
 
   login(credentials: { email: string; password: string }): Observable<any> {
-    return this.http.post(`${this.apiUrl}/login`, credentials);
+    return this.http.post(`${this.apiUrl}/login`, credentials, { withCredentials: true });
   }
 
   signup(user: { name: string; email: string; password: string }): Observable<any> {
-    return this.http.post(`${this.apiUrl}/signup`, user);
+    return this.http.post(`${this.apiUrl}/signup`, user, { withCredentials: true });
   }
 
   logout() {
-    this.http.post(`${this.apiUrl}/logout`, {}).subscribe({
+    this.http.post(`${this.apiUrl}/logout`, {}, { withCredentials: true }).subscribe({
       next: () => {
         if (this.isBrowser) {
           localStorage.removeItem('token');

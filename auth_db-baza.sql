@@ -1,4 +1,4 @@
--- --------------------------------------------------------
+Tables-- --------------------------------------------------------
 -- Host:                         127.0.0.1
 -- Server version:               10.4.32-MariaDB - mariadb.org binary distribution
 -- Server OS:                    Win64
@@ -29,6 +29,9 @@ CREATE TABLE IF NOT EXISTS `reservations` (
   `film_title` varchar(255) NOT NULL,
   `broj_karata` int(11) NOT NULL,
   `datum` date NOT NULL,
+  `termin` varchar(10) NOT NULL DEFAULT '20:00',
+  `sedista` varchar(100) DEFAULT NULL,
+  `kod` varchar(40) DEFAULT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   PRIMARY KEY (`id`),
   KEY `email` (`email`),
@@ -60,9 +63,43 @@ CREATE TABLE IF NOT EXISTS `users` (
   `name` varchar(100) DEFAULT NULL,
   `email` varchar(100) DEFAULT NULL,
   `password` varchar(255) DEFAULT NULL,
+  `role` enum('user','admin') NOT NULL DEFAULT 'user',
   PRIMARY KEY (`id`),
   UNIQUE KEY `email` (`email`)
 ) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+CREATE TABLE IF NOT EXISTS `reservation_seats` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `film_title` varchar(255) NOT NULL,
+  `datum` date NOT NULL,
+  `termin` varchar(10) NOT NULL,
+  `sediste` varchar(5) NOT NULL,
+  `reservation_id` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `unique_show_seat` (`film_title`,`datum`,`termin`,`sediste`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+CREATE TABLE IF NOT EXISTS `cinema_halls` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `naziv` varchar(80) NOT NULL,
+  `redovi` int(11) NOT NULL DEFAULT 5,
+  `sedista_po_redu` int(11) NOT NULL DEFAULT 8,
+  `aktivna` tinyint(1) NOT NULL DEFAULT 1,
+  PRIMARY KEY (`id`), UNIQUE KEY `naziv` (`naziv`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+INSERT INTO `cinema_halls` (`id`, `naziv`, `redovi`, `sedista_po_redu`) VALUES (1, 'Sala 1', 5, 8);
+
+CREATE TABLE IF NOT EXISTS `screenings` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `film_title` varchar(255) NOT NULL,
+  `hall_id` int(11) NOT NULL,
+  `datum` date NOT NULL,
+  `termin` varchar(10) NOT NULL,
+  `cena` decimal(10,2) NOT NULL DEFAULT 6.50,
+  PRIMARY KEY (`id`), UNIQUE KEY `unique_screening` (`film_title`,`hall_id`,`datum`,`termin`),
+  CONSTRAINT `screenings_hall_fk` FOREIGN KEY (`hall_id`) REFERENCES `cinema_halls` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- Dumping data for table auth_db.users: ~0 rows (approximately)
 DELETE FROM `users`;
